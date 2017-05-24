@@ -39,6 +39,9 @@ namespace AppSever.Controllers
                 case "Register":
                     result = Register();
                     break;
+                case "SetExpectedDate":
+                    result = SetExpectedDate();
+                    break;
                 case "getRemindToday":
                     result = getRemindToday();
                     break;
@@ -107,6 +110,21 @@ namespace AppSever.Controllers
 
             int state = sqlHelper.ExecuteSql("insert into Users (userName,loginId,loginPwd) values ('"
                 + registerUserName + "'," + registerId + ",'" + registerPwd + "')");
+            if (state > 0)
+                return Content("S");
+            else
+                return Content("E");
+        }
+        #endregion
+
+        #region SetExpectedDate
+        public ContentResult SetExpectedDate()
+        {
+            string userName = request.Form["userName"].Trim();
+            string expectedDate = request.Form["expectedDate"].Trim();
+
+            int state = sqlHelper.ExecuteSql("update Users set expectedDate='"
+                + expectedDate + "' where userName='" + userName + "'");
             if (state > 0)
                 return Content("S");
             else
